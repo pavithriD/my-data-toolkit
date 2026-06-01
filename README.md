@@ -17,7 +17,7 @@ A robust Python toolkit designed for automated data cleaning, quick exploration,
 You can install this toolkit directly from GitHub into any Google Colab notebook by running the following command:
 
 ```bash
-pip install "git+[https://github.com/pavithriD/my-data-toolkit.git](https://github.com/pavithriD/my-data-toolkit.git)"
+pip install "git+https://github.com/pavithriD/my-data-toolkit.git"
 
 
 
