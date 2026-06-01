@@ -19,31 +19,38 @@ You can install this toolkit directly from GitHub into any Google Colab notebook
 ```bash
 pip install "git+https://github.com/pavithriD/my-data-toolkit.git"
 
-
-
 ## How to Use
 
-> **Important Note:** This tool uses Google Colab's native upload interface and is optimized exclusively for **Google Colab** environments.
+> **Important Note:** This tool uses Google Colab's native upload interface and is optimized exclusively for **Google Colab** cloud environments.
 
-Open a blank Google Colab notebook, install the package, and run the complete pipeline using the code below:
+Open a blank Google Colab notebook, install the package, and run the pipeline using the code below.
+
+### Option A: Fully Automated Mode (The tool chooses for you)
+If you don't provide any column names, the tool automatically detects your data types and selects relevant columns for your charts:
 
 ```python
 from data_analysis.core import DataInspector
 
-# 1. Initialize the tool
 inspector = DataInspector()
-
-# 2. Upload ANY CSV file (e.g., housing data, retail data, weather data)
 inspector.upload_data()
-
-# 3. Handle missing values automatically
 inspector.handle_missing_values(strategy='median')
 
-# 4. Generate an interactive correlation heatmap
+# Generates all charts completely automatically!
 inspector.plot_associations()
+inspector.plot_scatter()    
+inspector.plot_histogram()  
+inspector.plot_box()
 
-# 5. NEW: The tool automatically finds and maps columns on its own!
-inspector.plot_scatter()    # Automatically pairs the first two numeric variables
-inspector.plot_histogram()  # Automatically picks a variable to show distribution
-inspector.plot_box()        # Automatically separates numeric data by categories
+###Option B: Custom Mode (Choose your own columns)
+If you want to look at specific variables in your dataset, simply pass your exact CSV column headers as text strings inside the parentheses:
+
+# Compare two specific numerical columns side-by-side
+inspector.plot_scatter(x_column="Age", y_column="Salary")
+
+# Look at the distribution of one specific numerical column
+inspector.plot_histogram(column="Salary")
+
+# Break down a numerical column by a categorical group column
+inspector.plot_box(x_column="Rating", y_column="Salary")
+
 
