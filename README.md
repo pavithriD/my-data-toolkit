@@ -30,14 +30,19 @@ Open a blank Google Colab notebook, install the package, and run the complete pi
 ```python
 from data_analysis.core import DataInspector
 
-# 1. Initialize the tool blueprint
+# 1. Initialize the tool
 inspector = DataInspector()
 
-# 2. Upload your CSV file interactively (This opens a Colab upload pop-up)
+# 2. Upload your CSV file interactively (opens a Colab pop-up)
 inspector.upload_data()
 
 # 3. Handle missing values automatically using the median strategy
 inspector.handle_missing_values(strategy='median')
 
-# 4. Generate and display an interactive Plotly correlation heatmap
+# 4. Generate an interactive correlation heatmap
 inspector.plot_associations()
+
+# 5. NEW: Try out the brand new custom visualization plots!
+inspector.plot_scatter("Age", "Salary")
+inspector.plot_histogram("Salary")
+inspector.plot_box("Rating", "Salary")
