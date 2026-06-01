@@ -28,7 +28,7 @@ pip install "git+[https://github.com/pavithriD/my-data-toolkit.git](https://gith
 Open a blank Google Colab notebook, install the package, and run the complete pipeline using the code below:
 
 ```python
-from data_analysis import DataInspector
+from data_analysis.core import DataInspector
 
 # 1. Initialize the tool blueprint
 inspector = DataInspector()
