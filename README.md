@@ -33,16 +33,17 @@ from data_analysis.core import DataInspector
 # 1. Initialize the tool
 inspector = DataInspector()
 
-# 2. Upload your CSV file interactively (opens a Colab pop-up)
+# 2. Upload ANY CSV file (e.g., housing data, retail data, weather data)
 inspector.upload_data()
 
-# 3. Handle missing values automatically using the median strategy
+# 3. Handle missing values automatically
 inspector.handle_missing_values(strategy='median')
 
 # 4. Generate an interactive correlation heatmap
 inspector.plot_associations()
 
-# 5. NEW: Try out the brand new custom visualization plots!
-inspector.plot_scatter("Age", "Salary")
-inspector.plot_histogram("Salary")
-inspector.plot_box("Rating", "Salary")
+# 5. NEW: The tool automatically finds and maps columns on its own!
+inspector.plot_scatter()    # Automatically pairs the first two numeric variables
+inspector.plot_histogram()  # Automatically picks a variable to show distribution
+inspector.plot_box()        # Automatically separates numeric data by categories
+
