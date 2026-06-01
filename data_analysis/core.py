@@ -13,10 +13,7 @@ class DataInspector:
         print("Please upload your CSV file:")
         uploaded = files.upload()
         
-        # Get the name of the uploaded file
         file_name = list(uploaded.keys())[0]
-        
-        # Read the file into a Pandas DataFrame, catching common null strings
         null_flags = ["?", "N/A", "NULL", "null"]
         self.df = pd.read_csv(io.BytesIO(uploaded[file_name]), na_values=null_flags)
         
@@ -52,26 +49,63 @@ class DataInspector:
         fig = px.imshow(corr_matrix, text_auto=True, color_continuous_scale='RdBu_r', title="Data Correlation Heatmap")
         fig.show()
 
-    def plot_scatter(self, x_column, y_column):
-        """Generates a scatter plot comparing two numerical variables."""
+    def plot_scatter(self, x_column=None, y_column=None):
+        """Generates a scatter plot. Automatically picks numeric columns if none are provided."""
         if self.df is None:
             print("Error: No data loaded.")
             return
+        
+        num_cols = self.df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        
+        # If user didn't specify columns, automatically pick the first two numeric ones
+        if x_column is None and len(num_cols) > 0:
+            x_column = num_cols[0]
+        if y_column is None and len(num_cols) > 1:
+            y_column = num_cols[1]
+            
+        if not x_column or not y_column:
+            print("Error: Could not automatically find two numeric columns for a scatter plot.")
+            return
+            
         fig = px.scatter(self.df, x=x_column, y=y_column, title=f"Scatter Plot: {x_column} vs {y_column}", template="plotly_white")
         fig.show()
 
-    def plot_histogram(self, column):
-        """Generates a histogram to show the distribution of a single column."""
+    def plot_histogram(self, column=None):
+        """Generates a histogram. Automatically picks the first numeric column if none is provided."""
         if self.df is None:
             print("Error: No data loaded.")
             return
+            
+        if column is None:
+            num_cols = self.df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+            if num_cols:
+                column = num_cols[0]
+                
+        if not column:
+            print("Error: No numeric column available for a histogram.")
+            return
+            
         fig = px.histogram(self.df, x=column, title=f"Histogram of {column}", template="plotly_white")
         fig.show()
 
-    def plot_box(self, x_column, y_column):
-        """Generates a box plot (great for Categorical vs Numerical variables)."""
+    def plot_box(self, x_column=None, y_column=None):
+        """Generates a box plot. Automatically finds a categorical and numeric column if none are provided."""
         if self.df is None:
             print("Error: No data loaded.")
             return
+            
+        cat_cols = self.df.select_dtypes(include=['object', 'category']).columns.tolist()
+        num_cols = self.df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        
+        if x_column is None:
+            # Try to pick a categorical column for X, otherwise fallback to a numeric one
+            x_column = cat_cols[0] if cat_cols else (num_cols[0] if num_cols else None)
+        if y_column is None and num_cols:
+            y_column = num_cols[0]
+            
+        if not x_column or not y_column:
+            print("Error: Not enough data columns to generate a box plot.")
+            return
+            
         fig = px.box(self.df, x=x_column, y=y_column, title=f"Box Plot: {y_column} by {x_column}", template="plotly_white")
         fig.show()
