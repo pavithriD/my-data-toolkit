@@ -41,7 +41,7 @@ inspector.plot_scatter()
 inspector.plot_histogram()  
 inspector.plot_box()
 
-###Option B: Custom Mode (Choose your own columns)
+### Option B: Custom Mode (Choose your own columns)
 If you want to look at specific variables in your dataset, simply pass your exact CSV column headers as text strings inside the parentheses:
 
 # Compare two specific numerical columns side-by-side
