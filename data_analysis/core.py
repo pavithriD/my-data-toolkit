@@ -8,14 +8,6 @@ class DataInspector:
     def __init__(self):
         self.df = None
 
-    #def upload_data_local(self, file_path):
-        #"""Temporary method to load files locally on your computer."""
-        #null_flags = ["?", "N/A", "NULL", "null"]
-        # Reads the CSV straight from your hard drive
-        #self.df = pd.read_csv(file_path, na_values=null_flags)
-        #print(f"\nSuccessfully loaded file from: {file_path}!")
-        #print(f"Dataset has {self.df.shape[0]} rows and {self.df.shape[1]} columns.")
-
     def upload_data(self):
         """Triggers a file upload pop-up in Google Colab and reads a CSV."""
         print("Please upload your CSV file:")
@@ -30,7 +22,7 @@ class DataInspector:
         
         print(f"\nSuccessfully loaded {file_name}!")
         print(f"Dataset has {self.df.shape[0]} rows and {self.df.shape[1]} columns.")
-    
+
     def handle_missing_values(self, strategy='median'):
         if self.df is None:
             print("Error: No data loaded. Run upload_data() first.")
@@ -48,6 +40,7 @@ class DataInspector:
         print(f"Data cleaning complete. All missing values filled using '{strategy}'.")
 
     def plot_associations(self):
+        """Generates a data correlation heatmap."""
         if self.df is None:
             print("Error: No data loaded.")
             return
@@ -57,4 +50,28 @@ class DataInspector:
             return
         corr_matrix = numeric_df.corr()
         fig = px.imshow(corr_matrix, text_auto=True, color_continuous_scale='RdBu_r', title="Data Correlation Heatmap")
+        fig.show()
+
+    def plot_scatter(self, x_column, y_column):
+        """Generates a scatter plot comparing two numerical variables."""
+        if self.df is None:
+            print("Error: No data loaded.")
+            return
+        fig = px.scatter(self.df, x=x_column, y=y_column, title=f"Scatter Plot: {x_column} vs {y_column}", template="plotly_white")
+        fig.show()
+
+    def plot_histogram(self, column):
+        """Generates a histogram to show the distribution of a single column."""
+        if self.df is None:
+            print("Error: No data loaded.")
+            return
+        fig = px.histogram(self.df, x=column, title=f"Histogram of {column}", template="plotly_white")
+        fig.show()
+
+    def plot_box(self, x_column, y_column):
+        """Generates a box plot (great for Categorical vs Numerical variables)."""
+        if self.df is None:
+            print("Error: No data loaded.")
+            return
+        fig = px.box(self.df, x=x_column, y=y_column, title=f"Box Plot: {y_column} by {x_column}", template="plotly_white")
         fig.show()
